@@ -11,10 +11,10 @@ LANG=en    # language direction (e.g 'en' for VSR task / 'en-es' for En to Es VS
 ROOT=$(dirname "$(dirname "$(readlink -fm "$0")")")
 MODEL_SRC=${ROOT}/src
 LLM_PATH=${ROOT}/checkpoints/Llama-2-7b-hf   # path to llama checkpoint
-DATA_ROOT=${MODEL_SRC}/dataset   # path to test dataset dir
+DATA_ROOT=/home/jupyter-samantha_caasi@dls-bf571/datasets/datasets_for_vsp-llm/lrs3/test_data   # path to test dataset dir
 
-MODEL_PATH=${ROOT}/checkpoints/checkpoint_finetune.pt  # path to trained model
-OUT_PATH=${ROOT}/decode    # output path to save
+MODEL_PATH=${ROOT}/checkpoints_raw/checkpoint_finetune.pt  # path to trained model
+OUT_PATH=${ROOT}/decode_output   # output path to save
 
 # fix variables based on langauge
 if [[ $LANG == *"-"* ]] ; then

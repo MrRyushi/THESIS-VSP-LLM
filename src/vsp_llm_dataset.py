@@ -53,7 +53,7 @@ def load_audio_visual(manifest_path, max_keep, min_keep, frame_rate, label_paths
     cluster_counts_fn = manifest_path.replace('.tsv','.cluster_counts')
     cluster_counts_list = open(cluster_counts_fn).readlines()
     
-    
+    print("MANIFEST_PATH", manifest_path)
     cluster_counts = []
     with open(manifest_path) as f:
         root = f.readline().strip()
@@ -67,6 +67,7 @@ def load_audio_visual(manifest_path, max_keep, min_keep, frame_rate, label_paths
             elif (not is_seq_label) and (not is_audio_label_aligned(sz/frame_rate, dur_from_label_list[ind])):
                 n_unaligned += 1
             else:
+                #print("ITEMS", items)
                 video_path = items[1]
                 audio_path = items[2]
                 audio_id = items[0]
@@ -264,6 +265,7 @@ class VSP_LLM_dataset(FairseqDataset):
                 feats = np.concatenate([feats, res], axis=0)
             feats = feats.reshape((-1, stack_order, feat_dim)).reshape(-1, stack_order*feat_dim)
             return feats
+        #print("MIX_NAME: ", mix_name)
         video_fn, audio_fn = mix_name
         if 'video' in self.modalities:
             video_feats = self.load_video(video_fn) # [T, H, W, 1]
@@ -292,6 +294,7 @@ class VSP_LLM_dataset(FairseqDataset):
         return video_feats, audio_feats
 
     def load_video(self, audio_name):
+        #print("AUDIO_NAME" , audio_name)
         feats = custom_utils.load_video(os.path.join(self.audio_root, audio_name))
         feats = self.transform(feats)
         feats = np.expand_dims(feats, axis=-1)
@@ -351,15 +354,49 @@ class VSP_LLM_dataset(FairseqDataset):
         cluster_counts = self.load_units(index)
         labels = [self.llm_tokenizer(self.label_list[0][index], return_tensors="pt").input_ids[0]]
         labels = [torch.cat((labels[0], torch.tensor([2]).long()))]
-        
+
         fid = self.names[index][1].split(':')[1]
-        src_lang, tgt_lang = fid.split('/')[1].split('-')
-        if src_lang == tgt_lang:
-            txt_feats = self.llm_tokenizer(f"Recognize this speech in {self.lang_dict[src_lang]}. Input : ", return_tensors="pt").input_ids[0]
-        else:
-            txt_feats = self.llm_tokenizer(f"Translate this {self.lang_dict[src_lang]} speech to {self.lang_dict[tgt_lang]}. Input : ", return_tensors="pt").input_ids[0]
+        #print(f"Debug: fid = {fid}, split('/') = {fid.split('/')}")
         
-        return {"id": index, 'fid': fid, "video_source": video_feats, 'audio_source': audio_feats, "cluster_counts": cluster_counts, "label_list": labels, 'text_source':[txt_feats]}
+        # Extract the parts
+        parts = fid.split('/')
+        
+        # Safety check
+        if len(parts) < 2:
+            raise ValueError(f"Unexpected fid format: {fid}")
+        
+        # Handle src_lang and tgt_lang assignment
+        src_tgt_part = parts[1]  # Expected to be something like "en-es" but it's "XMSQKG70a5s"
+        
+        if '-' in src_tgt_part:
+            src_lang, tgt_lang = src_tgt_part.split('-')
+        else:
+            # If there's no "-", assume it's a single language or unknown case
+            src_lang = src_tgt_part  # Assign as source language
+            tgt_lang = src_tgt_part  # Assume the same target language if missing
+            #print(f"Warning: No '-' found in fid. Assigning src_lang = tgt_lang = {src_lang}")
+        
+        # Now use the src_lang and tgt_lang safely
+        if src_lang == tgt_lang:
+            txt_feats = self.llm_tokenizer(
+                f"Recognize this speech in {self.lang_dict.get(src_lang, 'unknown')}. Input : ", 
+                return_tensors="pt"
+            ).input_ids[0]
+        else:
+            txt_feats = self.llm_tokenizer(
+                f"Translate this {self.lang_dict.get(src_lang, 'unknown')} speech to {self.lang_dict.get(tgt_lang, 'unknown')}. Input : ", 
+                return_tensors="pt"
+            ).input_ids[0]
+        
+        return {
+            "id": index, 
+            'fid': fid, 
+            "video_source": video_feats, 
+            'audio_source': audio_feats, 
+            "cluster_counts": cluster_counts, 
+            "label_list": labels, 
+            'text_source': [txt_feats]
+        }
 
     def __len__(self):
         return len(self.sizes)

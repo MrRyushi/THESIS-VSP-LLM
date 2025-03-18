@@ -1,0 +1,90 @@
+INST:Recognize this speech in unknown. Input : 
+REF:about a year after 9 11 researchers examined a group of women who were pregnant when they were exposed to the world
+HYP:about a year after 9 11 researchers damaged a group of female rats pregnant when they were exposed to the word
+
+[2025-03-17 03:58:28,138][hybrid.speech_recognize][INFO] - 
+INST:Recognize this speech in unknown. Input : 
+REF:about a year after 9 11 researchers examined a group of women who were pregnant when they were exposed to the world
+HYP:about a year after 9 11 researchers damaged a group of female rats pregnant when they were exposed to the word
+
+  0%|                                                                                                                                                           | 1/1321 [00:33<12:21:35, 33.71s/it]
+INST:Recognize this speech in unknown. Input : 
+REF:and when i look at the criminal justice system in the united states today i feel the exact same way that i did about the state of
+HYP:and when i look at the criminal justice system in the united states today i feel the exact same way that i did about the state of
+
+[2025-03-17 03:59:00,582][hybrid.speech_recognize][INFO] - 
+INST:Recognize this speech in unknown. Input : 
+REF:and when i look at the criminal justice system in the united states today i feel the exact same way that i did about the state of
+HYP:and when i look at the criminal justice system in the united states today i feel the exact same way that i did about the state of
+
+  0%|▏                                                                                                                                                          | 2/1321 [01:06<12:04:41, 32.97s/it]
+INST:Recognize this speech in unknown. Input : 
+REF:it turned out that we were doing a lot of low level drug cases on the streets just around the corner from our office in trenton
+HYP:it turned out that we were doing a lot of low level drug cases on the streets just around the corner from our office in johannesburg
+
+[2025-03-17 03:59:33,645][hybrid.speech_recognize][INFO] - 
+INST:Recognize this speech in unknown. Input : 
+REF:it turned out that we were doing a lot of low level drug cases on the streets just around the corner from our office in trenton
+HYP:it turned out that we were doing a lot of low level drug cases on the streets just around the corner from our office in johannesburg
+
+  0%|▎                                                                                                                                                          | 3/1321 [01:39<12:05:06, 33.01s/it]
+INST:Recognize this speech in unknown. Input : 
+REF:last week alone i got 238 pieces of nasty email and more
+HYP:last week too i got 238 pins can't see me and more
+
+[2025-03-17 03:59:58,086][hybrid.speech_recognize][INFO] - 
+INST:Recognize this speech in unknown. Input : 
+REF:last week alone i got 238 pieces of nasty email and more
+HYP:last week too i got 238 pins can't see me and more
+
+  0%|▍                                                                                                                                                          | 4/1321 [02:03<10:50:18, 29.63s/it]
+INST:Recognize this speech in unknown. Input : 
+REF:i'm here to tell you the story of crazy love a psychological trap disguised as love one
+HYP:i'm here to tell you story of grace grace's psychological trauma is not insignificant what
+
+[2025-03-17 04:00:28,921][hybrid.speech_recognize][INFO] - 
+INST:Recognize this speech in unknown. Input : 
+REF:i'm here to tell you the story of crazy love a psychological trap disguised as love one
+HYP:i'm here to tell you story of grace grace's psychological trauma is not insignificant what
+
+  0%|▌                                                                                                                                                          | 5/1321 [02:34<10:59:22, 30.06s/it]
+INST:Recognize this speech in unknown. Input : 
+REF:you're hearing one presentation after another often representing a group of people a tribe about how
+HYP:you're hearing one person talking to another often representing a group of people a tribe about how
+
+[2025-03-17 04:00:56,162][hybrid.speech_recognize][INFO] - 
+INST:Recognize this speech in unknown. Input : 
+REF:you're hearing one presentation after another often representing a group of people a tribe about how
+HYP:you're hearing one person talking to another often representing a group of people a tribe about how
+
+  0%|▋                                                                                                                                                          | 6/1321 [03:01<10:37:50, 29.10s/it]
+INST:Recognize this speech in unknown. Input : 
+REF:it is my belief that to create these rare game changers requires you to pull off at least
+HYP:it is my belief that to create these rare objects requires you to pull off a sense
+
+[2025-03-17 04:01:22,459][hybrid.speech_recognize][INFO] - 
+INST:Recognize this speech in unknown. Input : 
+REF:it is my belief that to create these rare game changers requires you to pull off at least
+HYP:it is my belief that to create these rare objects requires you to pull off a sense
+
+  1%|▊                                                                                                                                                          | 7/1321 [03:28<10:17:16, 28.19s/it]
+INST:Recognize this speech in unknown. Input : 
+REF:and that's really what i find so intriguing about the reactions that we've had to the
+HYP:and that's really what i find so intriguing about the reactions that we've had to the
+
+[2025-03-17 04:01:52,278][hybrid.speech_recognize][INFO] - 
+INST:Recognize this speech in unknown. Input : 
+REF:and that's really what i find so intriguing about the reactions that we've had to the
+HYP:and that's really what i find so intriguing about the reactions that we've had to the
+
+  1%|▉                                                                                                                                                          | 8/1321 [03:57<10:28:10, 28.71s/it]
+INST:Recognize this speech in unknown. Input : 
+REF:and so many of my early memories involved intricate daydreams where i would walk across borders
+HYP:and so many of my early memories involve exchanged daydreams where i would walk across borders
+
+[2025-03-17 04:02:20,251][hybrid.speech_recognize][INFO] - 
+INST:Recognize this speech in unknown. Input : 
+REF:and so many of my early memories involved intricate daydreams where i would walk across borders
+HYP:and so many of my early memories involve exchanged daydreams where i would walk across borders
+
+  1%|█                                                                                                                                                          | 9/1321 [04:25<10:22:41, 28.48s/it]

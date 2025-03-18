@@ -7,8 +7,10 @@
 
 
 # set variables
-DATA_PATH=../../auto_avsr_orig/preparation/lrs3_trainval   # path to train dataset dir
-OUT_PATH=../training_output    # output path to save 
+echo "Current working directory: $(pwd)"
+
+DATA_PATH=/home/jupyter-samantha_caasi@dls-bf571/datasets/datasets_for_vsp-llm/ouluvs2/muavic_dataset # path to train dataset dir
+OUT_PATH=/home/jupyter-samantha_caasi@dls-bf571/models/VSP-LLM/training_output    # output path to save 
 
 ROOT=$(dirname "$(dirname "$(readlink -fm "$0")")")
 SRC=${ROOT}/src
@@ -28,4 +30,7 @@ fairseq-hydra-train \
         model.llm_ckpt_path=${LLM_PATH} \
         hydra.run.dir=${OUT_PATH} \
         distributed_training.distributed_world_size=1 \
-        distributed_training.nprocs_per_node=1 
+        distributed_training.nprocs_per_node=1 \
+        checkpoint.reset_optimizer=True \
+        checkpoint.reset_dataloader=True \
+        checkpoint.reset_meters=True

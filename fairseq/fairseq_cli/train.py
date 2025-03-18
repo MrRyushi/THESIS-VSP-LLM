@@ -13,16 +13,6 @@ import math
 import os
 import sys
 from typing import Dict, Optional, Any, List, Tuple, Callable
-
-# We need to setup root logger before importing any fairseq libraries.
-logging.basicConfig(
-    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S",
-    level=os.environ.get("LOGLEVEL", "INFO").upper(),
-    stream=sys.stdout,
-)
-logger = logging.getLogger("fairseq_cli.train")
-
 import numpy as np
 import torch
 from fairseq import (
@@ -42,8 +32,31 @@ from fairseq.logging import meters, metrics, progress_bar
 from fairseq.model_parallel.megatron_trainer import MegatronTrainer
 from fairseq.trainer import Trainer
 from omegaconf import DictConfig, OmegaConf
+#tensorboard
+from torch.utils.tensorboard import SummaryWriter
 
+# We need to setup root logger before importing any fairseq libraries.
+logging.basicConfig(
+    format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+    level=os.environ.get("LOGLEVEL", "INFO").upper(),
+    stream=sys.stdout,
+)
+logger = logging.getLogger("fairseq_cli.train")
+logger.setLevel(logging.INFO)
 
+# Configure logging to write to both terminal and file
+log_filename = "training_log.txt"
+
+# Create file handler
+file_handler = logging.FileHandler(log_filename)
+file_handler.setFormatter(logging.Formatter("%(asctime)s - %(levelname)s - %(message)s"))
+
+# Avoid duplicate logs
+if not logger.hasHandlers():
+    logger.addHandler(file_handler)
+
+logger.info("Logging initialized: writing to terminal and training_log.txt")
 
 
 def main(cfg: FairseqConfig) -> None:
@@ -236,6 +249,8 @@ def should_stop_early(cfg: DictConfig, valid_loss: float) -> bool:
 def train(
     cfg: DictConfig, trainer: Trainer, task: tasks.FairseqTask, epoch_itr
 ) -> Tuple[List[Optional[float]], bool]:
+    # DOCUMENTATION FOR TENSOR BOARD
+    writer = SummaryWriter(log_dir="runs/train_experiment")
     """Train the model for one epoch and return validation losses."""
     # Initialize data iterator
     itr = epoch_itr.next_epoch_itr(
@@ -284,6 +299,7 @@ def train(
     should_stop = False
     num_updates = trainer.get_num_updates()
     logger.info("Start iterating over samples")
+    logger.info("Start iterating over samples")  
     for i, samples in enumerate(progress):
         with metrics.aggregate("train_inner"), torch.autograd.profiler.record_function(
             "train_step-%d" % i
@@ -296,7 +312,15 @@ def train(
             if num_updates % cfg.common.log_interval == 0:
                 stats = get_training_stats(metrics.get_smoothed_values("train_inner"))
                 progress.log(stats, tag="train_inner", step=num_updates)
-
+                log_message = (
+                    f"Step {num_updates} | Loss: {stats['loss']:.4f} | "
+                    f"Accuracy: {stats['accuracy']:.2f} | LR: {stats['lr']:.6f}"
+                )
+                logger.info(log_message)  # Save in file
+                # Add TensorBoard logging
+                writer.add_scalar("Loss/train", stats["loss"], num_updates)
+                writer.add_scalar("Accuracy/train", stats["accuracy"], num_updates)
+                writer.add_scalar("Learning_Rate", stats["lr"], num_updates)
                 # reset mid-epoch stats after each log interval
                 # the end-of-epoch stats will still be preserved
                 metrics.reset_meters("train_inner")
@@ -316,6 +340,10 @@ def train(
 
     # reset epoch-level meters
     metrics.reset_meters("train")
+    logger.info("Training complete. Final stats: %s", stats)
+
+    writer.close()
+
     return valid_losses, should_stop
 
 
@@ -386,6 +414,9 @@ def validate_and_save(
         )
     ) and not cfg.dataset.disable_validation and num_updates >= cfg.dataset.validate_after_updates
 
+    # VALIDATION DEBUG
+    print("VALID_SUBSETS: ", valid_subsets)
+    
     # Validate
     valid_losses = [None]
     if do_validate:

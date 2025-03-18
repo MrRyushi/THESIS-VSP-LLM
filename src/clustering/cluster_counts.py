@@ -1,5 +1,5 @@
 
-unit_pth = ???
+unit_pth = "../../labels/clustering_application/lrs2/valid.km"
 units = open(unit_pth).readlines()
 count_list = []
 for unit_line in units:
