@@ -10,12 +10,14 @@
 echo "Current working directory: $(pwd)"
 
 DATA_PATH=/home/jupyter-samantha_caasi@dls-bf571/datasets/datasets_for_vsp-llm/ouluvs2/muavic_dataset # path to train dataset dir
-OUT_PATH=/home/jupyter-samantha_caasi@dls-bf571/models/VSP-LLM/training_output    # output path to save 
+OUT_PATH=/home/jupyter-samantha_caasi@dls-bf571/models/VSP-LLM/training_output_test  # output path to save 
 
 ROOT=$(dirname "$(dirname "$(readlink -fm "$0")")")
 SRC=${ROOT}/src
 LLM_PATH=${ROOT}/checkpoints/Llama-2-7b-hf   # path to llama checkpoint
 PRETRAINED_MODEL_PATH=${ROOT}/checkpoints/large_vox_iter5.pt   # path to pretrained avhubert
+
+echo "starting to train ouluvs2 with vsp-llm"
 
 # start training
 export PYTHONPATH="${ROOT}/fairseq:$PYTHONPATH"
@@ -31,6 +33,3 @@ fairseq-hydra-train \
         hydra.run.dir=${OUT_PATH} \
         distributed_training.distributed_world_size=1 \
         distributed_training.nprocs_per_node=1 \
-        checkpoint.reset_optimizer=True \
-        checkpoint.reset_dataloader=True \
-        checkpoint.reset_meters=True

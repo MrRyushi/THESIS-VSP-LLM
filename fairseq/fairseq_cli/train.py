@@ -250,7 +250,7 @@ def train(
     cfg: DictConfig, trainer: Trainer, task: tasks.FairseqTask, epoch_itr
 ) -> Tuple[List[Optional[float]], bool]:
     # DOCUMENTATION FOR TENSOR BOARD
-    writer = SummaryWriter(log_dir="runs/train_experiment")
+    writer = SummaryWriter(log_dir="runs/train_experiment/ouluvs2")
     """Train the model for one epoch and return validation losses."""
     # Initialize data iterator
     itr = epoch_itr.next_epoch_itr(
@@ -415,7 +415,6 @@ def validate_and_save(
     ) and not cfg.dataset.disable_validation and num_updates >= cfg.dataset.validate_after_updates
 
     # VALIDATION DEBUG
-    print("VALID_SUBSETS: ", valid_subsets)
     
     # Validate
     valid_losses = [None]
