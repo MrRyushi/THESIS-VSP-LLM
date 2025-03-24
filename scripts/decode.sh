@@ -13,8 +13,8 @@ MODEL_SRC=${ROOT}/src
 LLM_PATH=${ROOT}/checkpoints/Llama-2-7b-hf   # path to llama checkpoint
 DATA_ROOT=/home/jupyter-samantha_caasi@dls-bf571/datasets/datasets_for_vsp-llm/lrs3/test_data   # path to test dataset dir
 
-MODEL_PATH=${ROOT}/checkpoints_raw/checkpoint_finetune.pt  # path to trained model
-OUT_PATH=${ROOT}/decode_output   # output path to save
+MODEL_PATH=${ROOT}/checkpoints/large_vox_iter5.pt  # path to trained model
+OUT_PATH=${ROOT}/decode_output/lrs3_large_vox   # output path to save
 
 # fix variables based on langauge
 if [[ $LANG == *"-"* ]] ; then
@@ -32,7 +32,7 @@ fi
 
 # start decoding
 export PYTHONPATH="${ROOT}/fairseq:$PYTHONPATH"
-CUDA_VISIBLE_DEVICES=0 python -B ${MODEL_SRC}/vsp_llm_decode.py \
+CUDA_VISIBLE_DEVICES=1 python -B ${MODEL_SRC}/vsp_llm_decode.py \
     --config-dir ${MODEL_SRC}/conf \
     --config-name s2s_decode \
         common.user_dir=${MODEL_SRC} \
