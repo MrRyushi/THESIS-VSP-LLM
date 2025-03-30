@@ -10,7 +10,7 @@
 echo "Current working directory: $(pwd)"
 
 DATA_PATH=/home/jupyter-samantha_caasi@dls-bf571/datasets/datasets_for_vsp-llm/ouluvs2/muavic_dataset # path to train dataset dir
-OUT_PATH=/home/jupyter-samantha_caasi@dls-bf571/models/VSP-LLM/training_output_test  # output path to save 
+OUT_PATH=/home/jupyter-samantha_caasi@dls-bf571/models/VSP-LLM/training_output_ouluvs2  # output path to save 
 
 ROOT=$(dirname "$(dirname "$(readlink -fm "$0")")")
 SRC=${ROOT}/src
@@ -23,7 +23,7 @@ echo "starting to train ouluvs2 with vsp-llm"
 export PYTHONPATH="${ROOT}/fairseq:$PYTHONPATH"
 fairseq-hydra-train \
     --config-dir ${SRC}/conf \
-    --config-name vsp-llm-433h-freeze \
+    --config-name vsp-llm-433h-finetune \
         common.user_dir=${SRC} \
         task.data=${DATA_PATH} \
         task.label_dir=${DATA_PATH} \
