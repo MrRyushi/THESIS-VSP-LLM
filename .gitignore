@@ -195,3 +195,6 @@ __pycache__/
 logs/
 checkpoints/
 wandb/
+bitsandbytes/
+training_output_lrs2/
+training_output_ouluvs2/

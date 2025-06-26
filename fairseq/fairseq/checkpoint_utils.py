@@ -284,6 +284,9 @@ def load_checkpoint_to_cpu(path, arg_overrides=None, load_on_all_ranks=False):
     checkpoint on each node.
     """
     local_path = PathManager.get_local_path(path)
+    
+    #path = "/home/jupyter-samantha_caasi@dls-bf571/models/VSP-LLM/checkpoints/large_vox_iter5.pt"
+    print("path ", path)
     # The locally cached file returned by get_local_path() may be stale for
     # remote files that are periodically updated/overwritten (ex:
     # checkpoint_last.pt) - so we remove the local copy, sync across processes
@@ -299,9 +302,11 @@ def load_checkpoint_to_cpu(path, arg_overrides=None, load_on_all_ranks=False):
         if load_on_all_ranks:
             torch.distributed.barrier()
         local_path = PathManager.get_local_path(path)
-
+    print("local path: ", local_path)
+    if local_path == "/scratch1/sam.caasi/models/VSP-LLM/checkpoints/large_vox_iter5.pt":
+        local_path = "/home/jupyter-john_patrick_marce-15f79/models/VSP-LLM/checkpoints/large_vox_iter5.pt"
     with open(local_path, "rb") as f:
-        state = torch.load(f, map_location=torch.device("cpu"))
+        state = torch.load(f, map_location=torch.device("cpu"), weights_only=False)
 
     if "args" in state and state["args"] is not None and arg_overrides is not None:
         args = state["args"]

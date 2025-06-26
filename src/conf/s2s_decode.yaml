@@ -18,6 +18,9 @@ dataset:
   gen_subset: test
   num_workers: 0
 
+task:
+  modalities: ['video']  # ✅ Add this
+
 override:
   noise_prob: 0.0
   noise_snr: 0

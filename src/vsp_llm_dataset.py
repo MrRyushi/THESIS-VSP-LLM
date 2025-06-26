@@ -75,6 +75,9 @@ def load_audio_visual(manifest_path, max_keep, min_keep, frame_rate, label_paths
                 inds.append(ind)
                 sizes.append(sz)
                 cluster_counts.append(cluster_counts_list[ind].strip())
+                # Add this debug print:
+                if ind < 10:
+                    print(f"[DEBUG] Line {ind}: audio_id='{audio_id}', video_path='{video_path}', size={sz}")
     tot = ind + 1
     logger.info(
         (
@@ -88,10 +91,15 @@ def load_audio_visual(manifest_path, max_keep, min_keep, frame_rate, label_paths
 def load_label(label_path, inds, tot):
     with open(label_path) as f:
         labels = [line.rstrip() for line in f]
+        print(tot)
         assert (
             len(labels) == tot
         ), f"number of labels does not match ({len(labels)} != {tot})"
         labels = [labels[i] for i in inds]
+
+        print("[DEBUG] Matching TSV lines and WRD labels:")
+        for i, idx in enumerate(inds[:10]):
+            print(f"  Line {idx}: WRD='{labels[idx]}'")
     return labels
 
 

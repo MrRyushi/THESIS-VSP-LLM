@@ -216,7 +216,8 @@ def _main(cfg, output_file):
             instruction = tokenizer.decode(sample['net_input']['source']['text'][i].int().cpu(), skip_special_tokens=True, clean_up_tokenization_spaces=False)
             result_dict['instruction'].append(instruction)
             result_dict['hypo'].append(hypo_str)
-            logger.info(f"\nINST:{instruction}\nREF:{ref_sent}\nHYP:{hypo_str}\n")
+            logger.info(f"\nFILE:{sample['utt_id'][i]}\nINST:{instruction}\nREF:{ref_sent}\nHYP:{hypo_str}\n")
+
 
     yaml_str = OmegaConf.to_yaml(cfg.generation)
     fid = int(hashlib.md5(yaml_str.encode("utf-8")).hexdigest(), 16)
